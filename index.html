@@ -1,0 +1,555 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @media (min-width: 1rem) {
+            .element-item {
+                width: 97%;
+            }
+
+            .element-item .name {
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+
+            body {
+                --tile-height: 200px;
+            }
+        }
+
+        @media (min-width: 53rem) {
+            .element-item {
+                width: 47.5%;
+            }
+
+            .element-item .name {
+                font-size: 1.5em;
+                font-weight: normal;
+            }
+
+            body {
+                --tile-height: 220px;
+            }
+        }
+
+        @media (min-width: 87rem) {
+            .element-item {
+                width: 31%;
+            }
+
+            .element-item .name {
+                font-size: 2em;
+                font-weight: normal;
+            }
+
+            body {
+                --tile-height: 240px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            /* defaults to dark theme */
+            body {
+                --text-color: #eee;
+                --bkg-color: #121212;
+                --searchbox-bkg-color: rgba(255, 255, 255, 0.1);
+                --border-color: #888;
+                --link-color: #62add8;
+                --tile-bkg-color: #2a2a2a;
+                --modal-content-bkg-color: #2a2a2a;
+                --lighter-bkg-color: var(--searchbox-bkg-color);
+                --model-bkg-color: rgba(0, 0, 0, 0.4);
+            }
+
+            body.light-theme {
+                --text-color: #222;
+                --bkg-color: #fff;
+                --searchbox-bkg-color: rgba(0, 0, 0, .1);
+                --border-color: #aaa;
+                --link-color: #1974be;
+                --tile-bkg-color: #e5e5e5;
+                --modal-content-bkg-color: #fcfcfc;
+                --lighter-bkg-color: var(--searchbox-bkg-color);
+                --model-bkg-color: rgba(238, 238, 238, 0.4);
+            }
+
+            .light-theme .element-item {
+                border: 1px solid #d6d9dc;
+                border-radius: 5px;
+                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%), 0 1px 10px 0 rgb(0 0 0 / 9%) !important;
+                background: #fff;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            font-size: 2.5em;
+        }
+
+        .top h3 {
+            font-size: 1.5em;
+            margin-top: -10px;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: var(--bkg-color);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            max-width: 2000px;
+        }
+
+        blockquote {
+            background: var(--lighter-bkg-color);
+            border-left: 10px solid var(--border-color);
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+        }
+
+        /* ---- input ---- */
+
+        input[type="text"] {
+            font-size: 20px;
+        }
+
+        /* ---- .element-item ---- */
+
+        .element-item {
+            position: relative;
+            float: left;
+            height: var(--tile-height);
+            margin: 10px;
+            padding: 10px;
+            background: var(--tile-bkg-color);
+        }
+
+        .element-item>* {
+            margin: 0;
+            padding: 0;
+        }
+
+        .element-item .symbol {
+            position: absolute;
+            left: 10px;
+            top: 0px;
+            font-size: 42px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .element-item .number {
+            position: absolute;
+            right: 8px;
+            top: 5px;
+        }
+
+        .element-item .weight {
+            position: absolute;
+            left: 10px;
+            top: 76px;
+            font-size: 12px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        div {
+            color: var(--text-color);
+        }
+
+        .top {
+            display: flex;
+            flex-direction: column;
+            max-width: 40rem;
+            gap: 2rem;
+            margin: 1rem auto;
+        }
+
+        .quicksearch {
+            border: 0;
+            font-weight: 400;
+            background: var(--searchbox-bkg-color);
+            width: 100%;
+            padding: 1rem;
+            line-height: 1.15;
+            margin: 0 auto 50 auto;
+            max-width: 500px;
+            display: block;
+        }
+
+        a {
+            cursor: pointer;
+        }
+
+        .mid {
+            text-align: center;
+        }
+
+        #theme-toggle {
+            float: right;
+            border: 1px solid var(--border-color);
+            padding: 2px;
+        }
+
+        .icon {
+            position: absolute;
+            height: 100%;
+            width: 45%;
+            left: 0;
+            top: 0;
+        }
+
+        .icon img {
+            height: var(--tile-height);
+        }
+
+        .info {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            float: right;
+            width: 45%;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            overflow: auto;
+            background-color: var(--model-bkg-color);
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-bkg-color);
+            margin: 15% auto;
+            padding: 50px 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .modal-content a {
+            word-break: break-all;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            right: -3px;
+            top: -37px;
+            position: relative;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        p a {
+            color: var(--link-color);
+        }
+
+        .tags div {
+            display: inline-block;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            padding: 2px 4px;
+        }
+
+        .element-more-info {
+            display: none;
+        }
+    </style>
+    <script src="./js/shuffle.min.js"></script>
+</head>
+
+<body>
+    <div class="top">
+        <div class="top-buttons"><a id="theme-toggle">Theme: &#128526;</a></div>
+        <h1 class="mid">危险笔记</h1>
+        <h3 class="mid">收集各种身边的危险</h3>
+    </div>
+    <div class="tiles">
+        <input type="text" class="quicksearch" placeholder="Search" />
+        <div class="grid" id="grid">
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="more-description">Some text in the Modal..</div>
+        </div>
+
+    </div>
+
+    <script>
+        const themeToggleBtn = document.querySelector("#theme-toggle");
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const currentTheme = localStorage.getItem("theme");
+        const moon = "&#127761;"
+        const sun = "&#x1f60e;";
+        if (currentTheme == "dark") {
+            document.body.classList.toggle("dark-theme");
+            themeToggleBtn.innerHTML = "Theme: " + moon;
+        } else if (currentTheme == "light") {
+            document.body.classList.toggle("light-theme");
+            themeToggleBtn.innerHTML = "Theme: " + sun;
+        }
+
+        themeToggleBtn.addEventListener("click", function () {
+            if (prefersDarkScheme.matches) {
+                document.body.classList.toggle("light-theme");
+                var theme = document.body.classList.contains("light-theme")
+                    ? "light"
+                    : "dark";
+            } else {
+                document.body.classList.toggle("dark-theme");
+                var theme = document.body.classList.contains("dark-theme")
+                    ? "dark"
+                    : "light";
+            }
+            if (theme == "dark") {
+                themeToggleBtn.innerHTML = "Theme: " + moon;
+            }
+            else {
+                themeToggleBtn.innerHTML = "Theme: " + sun;
+            }
+            localStorage.setItem("theme", theme);
+        });
+
+        const data = [
+            {
+                "name": "飞扬喉",
+                "description": "食物太热，会使喉咙内出现血泡，可导致呼吸不畅",
+                "more": "<h3>相关新闻报道：</h3><strong>《……海底捞吃火锅意外身亡，据传飞扬喉所致……》</strong><br>(福建莆田，2022-9-6)<br><a href='https://www.163.com/dy/article/HGST0T6O0546N0BI.html'>https://www.163.com/dy/article/HGST0T6O0546N0BI.html</a><blockquote><p>此时用“海姆立克急救法”是无济于事的，只能用干净工具立刻戳破血泡，如果已经命垂一线了，直接用食指伸进口腔，指甲划破血泡，然后清水反复清洁，并且需要小心血泡的再次出现。</p>网友1：以前上学时遇到过，当时的男朋友是医学生，用针还是牙签戳破，把血放出来就好了，但是应该没有那么严重。</p>网友2：我妈就是总这样，稍微烫一点硬一点都有可能长，她自己会使劲咳嗽把血泡咳破血吐出来就好了。</p>网友3： 我也有过这种事！以前吃了一口鸡排然后就感觉嗓子眼长了个泡，并且快速长大，堵住了整个喉管，呼吸越来越困难。快给我吓死，我边哭边疯狂咳嗽，用手抠喉咙干呕，最后那个泡破了。吐了两大口黑血，吃了一个月的流食伤口才好。</p></blockquote>",
+                "tag": ["饮食"]
+            }, {
+                "name": "推下站台",
+                "description": "在地铁站、火车站，会被路人无缘由地推下站台",
+                "more": "<h3>相关新闻报道：</h3><strong>《……纽约一华裔女子被人推下地铁站台当场身亡……》</strong><br>(纽约，2022-01-16)<br><a href='https://www.sohu.com/a/516981882_116237'>https://www.sohu.com/a/516981882_116237</a><br><a href='https://www.nytimes.com/2022/01/16/nyregion/michelle-go-man-pushes-woman-subway.html'>https://www.nytimes.com/2022/01/16/nyregion/michelle-go-man-pushes-woman-subway.html</a><blockquote><p>61岁的非裔嫌疑人男子西蒙·马尔西亚，在纽约时代广场地铁站将一名正在等地铁的亚裔女性推下站台。她跌落铁轨后，被正在进站的列车撞死。嫌疑人在袭击Michelle Go前，曾试图接近另一名非亚裔女性，但这名女性受到惊吓后离开。</p></blockquote><strong>Man hit by train after 'trying to pull stranger onto tracks' at Tube station</strong><br>(伦敦，2022-08-29)<br><a href='https://www.mirror.co.uk/news/uk-news/man-hit-train-after-trying-27860396'>https://www.mirror.co.uk/news/uk-news/man-hit-train-after-trying-27860396</a><blockquote><p>A man hit by a train earlier today has been arrested after it is believed he attempted to pull a woman onto the tracks with him.</p><p>British Transport Police said they believe the man and woman were complete strangers. The woman was thankfully unharmed, but understandably shaken up.</p><p>The man, who survived being hit by the train, has been arrested on suspicion of attempted murder, and taken to hospital for treatment to head injuries.</p></blockquote>",
+                "tag": ["交通"]
+            }, {
+                "name": "D",
+                "description": "D",
+                "tag": ["Category D"]
+            }, {
+                "name": "E",
+                "description": "E",
+                "tag": ["Category E"]
+            }, {
+                "name": "A",
+                "description": "B",
+                "tag": ["Category A"]
+            }
+        ];
+
+        let tilesHtml = "";
+        for (let d of data) {
+            let imageSrc = d.image == undefined ? "./img/default.svg" : d.image;
+            let html = "<div class='element-item actinoid metal inner-transition'>"
+                + "<div class='icon'><img src='" + imageSrc + "' /></div>"
+                + "<div class='info'>"
+                + "<h3 class='name'>" + d.name + "</h3>"
+                + "<p class='description'>" + d.description + "<a class='more'> (了解更多...) </a></p>"
+                + "<div class='tags'>" + d.tag.map(e => "<div>" + e + "</div>").join("") + "</div>"
+                + "<div class='element-more-info'>" + d.more + "</div>"
+                + "</div></div>";
+            console.log(html)
+            tilesHtml += html;
+        }
+        document.querySelector('.grid').innerHTML = tilesHtml;
+
+        class Demo {
+            constructor(element) {
+                this.element = element;
+                this.shuffle = new Shuffle(element, {
+                    itemSelector: '.element-item'
+                });
+
+                this._activeFilters = [];
+                this.addFilterButtons();
+                this.addSorting();
+                this.addSearchFilter();
+            }
+
+            addFilterButtons() {
+                const options = document.querySelector('.filter-options');
+                if (!options) {
+                    return;
+                }
+
+                const filterButtons = Array.from(options.children);
+                const onClick = this._handleFilterClick.bind(this);
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', onClick, false);
+                });
+            }
+
+            _handleFilterClick(evt) {
+                const btn = evt.currentTarget;
+                const isActive = btn.classList.contains('active');
+                const btnGroup = btn.getAttribute('data-group');
+
+                this._removeActiveClassFromChildren(btn.parentNode);
+
+                let filterGroup;
+                if (isActive) {
+                    btn.classList.remove('active');
+                    filterGroup = Shuffle.ALL_ITEMS;
+                } else {
+                    btn.classList.add('active');
+                    filterGroup = btnGroup;
+                }
+
+                this.shuffle.filter(filterGroup);
+            }
+
+            _removeActiveClassFromChildren(parent) {
+                const { children } = parent;
+                for (let i = children.length - 1; i >= 0; i--) {
+                    children[i].classList.remove('active');
+                };
+            }
+
+            addSorting() {
+                const buttonGroup = document.querySelector('.sort-options');
+                if (!buttonGroup) {
+                    return;
+                }
+                buttonGroup.addEventListener('change', this._handleSortChange.bind(this));
+            }
+
+            _handleSortChange(evt) {
+                // Add and remove `active` class from buttons.
+                const buttons = Array.from(evt.currentTarget.children);
+                buttons.forEach(button => {
+                    if (button.querySelector('input').value === evt.target.value) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+
+                // Create the sort options to give to Shuffle.
+                const { value } = evt.target;
+                let options = {};
+
+                function sortByDate(element) {
+                    return element.getAttribute('data-created');
+                }
+
+                function sortByTitle(element) {
+                    return element.getAttribute('data-title').toLowerCase();
+                }
+
+                if (value === 'date-created') {
+                    options = {
+                        reverse: true,
+                        by: sortByDate
+                    };
+
+                } else if (value === 'title') {
+                    options = {
+                        by: sortByTitle
+                    };
+
+                }
+                this.shuffle.sort(options);
+            }
+
+            // Advanced filtering
+            addSearchFilter() {
+                const searchInput = document.querySelector('.quicksearch');
+                if (!searchInput) {
+                    return;
+                }
+                searchInput.addEventListener('keyup', this._handleSearchKeyup.bind(this));
+            }
+
+            /**
+             * Filter the shuffle instance by items with a title that matches the search input.
+             * @param {Event} evt Event object.
+             */
+            _handleSearchKeyup(evt) {
+                const searchText = evt.target.value.toLowerCase();
+                this.shuffle.filter((element, shuffle) => {
+                    // If there is a current filter applied, ignore elements that don't match it.
+                    if (shuffle.group !== Shuffle.ALL_ITEMS) {
+                        // Get the item's groups.
+                        const groups = JSON.parse(element.getAttribute('data-groups'));
+                        const isElementInCurrentGroup = groups.indexOf(shuffle.group) !== -1;
+                        // Only search elements in the current group
+                        if (!isElementInCurrentGroup) {
+                            return false;
+                        }
+                    }
+                    const titleElement = element;
+                    const titleText = titleElement.textContent.toLowerCase().trim();
+                    return titleText.indexOf(searchText) !== -1;
+                });
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new Demo(document.getElementById('grid'));
+        });
+
+        let elementItems = document.querySelectorAll(".element-item");
+        for (let ei of elementItems) {
+            let moreBtn = ei.querySelector(".more");
+            moreBtn.onclick = function () {
+                modal.style.display = "block";
+                let description = ei.querySelector(".element-more-info").innerHTML;
+                modal.querySelector(".more-description").innerHTML = description;
+            }
+        }
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
