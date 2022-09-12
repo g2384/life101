@@ -14,7 +14,7 @@
                 font-weight: bold;
             }
 
-            body {
+            :root {
                 --tile-height: 210px;
                 --icon-height: min(50vw, 200px);
             }
@@ -30,7 +30,7 @@
                 font-weight: normal;
             }
 
-            body {
+            :root {
                 --tile-height: 220px;
                 --icon-height: var(--tile-height);
             }
@@ -46,16 +46,16 @@
                 font-weight: normal;
             }
 
-            body {
+            :root {
                 --tile-height: 240px;
                 --icon-height: var(--tile-height);
             }
         }
 
-        @media (prefers-color-scheme: dark) {
+        @media (prefers-color-scheme: light) {
 
-            /* defaults to dark theme */
-            body {
+            /* defaults to dark theme 
+            body.dark-theme {
                 --text-color: #eee;
                 --bkg-color: #121212;
                 --searchbox-bkg-color: rgba(255, 255, 255, 0.1);
@@ -65,26 +65,26 @@
                 --modal-content-bkg-color: #2a2a2a;
                 --lighter-bkg-color: var(--searchbox-bkg-color);
                 --model-bkg-color: rgba(0, 0, 0, 0.4);
-            }
+            }*/
+        }
 
-            body.light-theme {
-                --text-color: #222;
-                --bkg-color: #fff;
-                --searchbox-bkg-color: rgba(0, 0, 0, .1);
-                --border-color: #aaa;
-                --link-color: #1974be;
-                --tile-bkg-color: #e5e5e5;
-                --modal-content-bkg-color: #fcfcfc;
-                --lighter-bkg-color: var(--searchbox-bkg-color);
-                --model-bkg-color: rgba(238, 238, 238, 0.4);
-            }
+        :root {
+            --text-color: #222;
+            --bkg-color: #fff;
+            --searchbox-bkg-color: rgba(0, 0, 0, .1);
+            --border-color: #aaa;
+            --link-color: #1974be;
+            --tile-bkg-color: #e5e5e5;
+            --modal-content-bkg-color: #fcfcfc;
+            --lighter-bkg-color: var(--searchbox-bkg-color);
+            --model-bkg-color: rgba(238, 238, 238, 0.4);
+        }
 
-            .light-theme .element-item {
-                border: 1px solid #d6d9dc;
-                border-radius: 5px;
-                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%), 0 1px 10px 0 rgb(0 0 0 / 9%) !important;
-                background: #fff;
-            }
+        body .element-item {
+            border: 1px solid #d6d9dc;
+            border-radius: 5px;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%), 0 1px 10px 0 rgb(0 0 0 / 9%) !important;
+            background: #fff;
         }
 
         * {
@@ -253,6 +253,11 @@
             overflow: auto;
         }
 
+        .more-description {
+            overflow: auto;
+            height: 100%;
+        }
+
         .modal-content a {
             word-break: break-all;
         }
@@ -294,7 +299,7 @@
 
 <body>
     <div class="top">
-        <div class="top-buttons"><a id="theme-toggle">Theme: &#128526;</a></div>
+        <!--<div class="top-buttons"><a id="theme-toggle">Theme: &#128526;</a></div>-->
         <h1 class="mid">危险笔记</h1>
         <h3 class="mid">收集各种身边的危险</h3>
     </div>
@@ -316,40 +321,40 @@
     </div>
 
     <script>
-        const themeToggleBtn = document.querySelector("#theme-toggle");
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-        const currentTheme = localStorage.getItem("theme");
-        const moon = "&#127761;"
-        const sun = "&#x1f60e;";
-        if (currentTheme == "dark") {
-            document.body.classList.toggle("dark-theme");
-            themeToggleBtn.innerHTML = "Theme: " + moon;
-        } else if (currentTheme == "light") {
-            document.body.classList.toggle("light-theme");
-            themeToggleBtn.innerHTML = "Theme: " + sun;
-        }
-
-        themeToggleBtn.addEventListener("click", function () {
-            if (prefersDarkScheme.matches) {
-                document.body.classList.toggle("light-theme");
-                var theme = document.body.classList.contains("light-theme")
-                    ? "light"
-                    : "dark";
-            } else {
-                document.body.classList.toggle("dark-theme");
-                var theme = document.body.classList.contains("dark-theme")
-                    ? "dark"
-                    : "light";
-            }
-            if (theme == "dark") {
-                themeToggleBtn.innerHTML = "Theme: " + moon;
-            }
-            else {
-                themeToggleBtn.innerHTML = "Theme: " + sun;
-            }
-            localStorage.setItem("theme", theme);
-        });
+        /* const themeToggleBtn = document.querySelector("#theme-toggle");
+         const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: light)");
+ 
+         const currentTheme = localStorage.getItem("theme");
+         const moon = "&#127761;"
+         const sun = "&#x1f60e;";
+         if (currentTheme == "dark") {
+             document.body.classList.toggle("dark-theme");
+             themeToggleBtn.innerHTML = "Theme: " + moon;
+         } else if (currentTheme == "light") {
+             document.body.classList.toggle("light-theme");
+             themeToggleBtn.innerHTML = "Theme: " + sun;
+         }
+ 
+         themeToggleBtn.addEventListener("click", function () {
+             if (prefersDarkScheme.matches) {
+                 document.body.classList.toggle("light-theme");
+                 var theme = document.body.classList.contains("light-theme")
+                     ? "light"
+                     : "dark";
+             } else {
+                 document.body.classList.toggle("dark-theme");
+                 var theme = document.body.classList.contains("dark-theme")
+                     ? "dark"
+                     : "light";
+             }
+             if (theme == "dark") {
+                 themeToggleBtn.innerHTML = "Theme: " + moon;
+             }
+             else {
+                 themeToggleBtn.innerHTML = "Theme: " + sun;
+             }
+             localStorage.setItem("theme", theme);
+         });*/
 
         const data = [
             {
