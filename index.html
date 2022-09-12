@@ -15,7 +15,8 @@
             }
 
             body {
-                --tile-height: 200px;
+                --tile-height: 210px;
+                --icon-height: min(50vw, 200px);
             }
         }
 
@@ -31,6 +32,7 @@
 
             body {
                 --tile-height: 220px;
+                --icon-height: var(--tile-height);
             }
         }
 
@@ -46,6 +48,7 @@
 
             body {
                 --tile-height: 240px;
+                --icon-height: var(--tile-height);
             }
         }
 
@@ -210,10 +213,13 @@
             width: 45%;
             left: 0;
             top: 0;
+            display: flex;
         }
 
         .icon img {
-            height: var(--tile-height);
+            height: var(--icon-height);
+            display: block;
+            margin: auto;
         }
 
         .info {
@@ -234,14 +240,17 @@
             width: 100%;
             overflow: auto;
             background-color: var(--model-bkg-color);
+            justify-content: center;
+            height: 100%;
         }
 
         .modal-content {
             background-color: var(--modal-content-bkg-color);
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 50px 20px;
             border: 1px solid #888;
             width: 80%;
+            overflow: auto;
         }
 
         .modal-content a {
@@ -524,9 +533,17 @@
         for (let ei of elementItems) {
             let moreBtn = ei.querySelector(".more");
             moreBtn.onclick = function () {
-                modal.style.display = "block";
+                modal.style.display = "flex";
                 let description = ei.querySelector(".element-more-info").innerHTML;
                 modal.querySelector(".more-description").innerHTML = description;
+
+                var win = window,
+                    doc = document,
+                    docElem = doc.documentElement,
+                    body = doc.getElementsByTagName('body')[0],
+                    x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+                    y = win.innerHeight || docElem.clientHeight || body.clientHeight;
+                modal.querySelector(".modal-content").style.height = y - (0.15 * y * 2);
             }
         }
 
